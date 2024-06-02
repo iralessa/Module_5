@@ -8,6 +8,13 @@ class User:
     def __str__(self):
         return f"Пользователь: {self.nickname}, Возраст: {self.age}"
 
+    def __eq__(self, other):
+        if isinstance(other, User):
+            return (self.nickname == other.nickname and
+                    self.password == other.password and
+                    self.age == other.age)
+        return False
+
 class Video:
     def __init__(self, title, duration, time_now=0, adult_mode=False):
         self.title = title
@@ -25,7 +32,7 @@ class UrTube:
 
     def log_in(self, login, password):
         for user in self.users:
-            if user.nickname == login and user.password == hash(password):
+            if user == User(login, password, None):  # Используем сравнение объектов User
                 self.current_user = user
                 print(f"Пользователь {user.nickname} вошел в систему")
                 return
